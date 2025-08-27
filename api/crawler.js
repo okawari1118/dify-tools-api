@@ -1,5 +1,10 @@
-// Vercel Serverless Function format
 export default async function handler(req, res) {
+  // ★★★ デバッグ用のログを追加 ★★★
+  console.log("--- Crawler function started ---");
+  console.log("Received Method:", req.method);
+  console.log("Received Body:", JSON.stringify(req.body, null, 2));
+  console.log("-----------------------------");
+
   // CORS preflight request handling for browsers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -55,7 +60,12 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error(error);
+    // ★★★ エラー内容も詳しくログに出すように修正 ★★★
+    console.error("!!! --- An error occurred --- !!!");
+    console.error("Error Message:", error.message);
+    console.error("Error Stack:", error.stack);
+    console.error("Request Body was:", JSON.stringify(req.body, null, 2));
+    console.error("!!! ------------------------- !!!");
     res.status(500).json({ error: 'Failed to crawl the page', details: error.message });
   }
 }
